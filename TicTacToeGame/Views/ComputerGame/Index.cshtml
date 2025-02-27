@@ -1,0 +1,236 @@
+﻿@model TicTacToeGame.Models.Game
+
+@{
+    ViewData["Title"] = "Tic-Tac-Toe";
+}
+
+<button id="muteButton" class="mute-btn">🔇 Unmute</button>
+
+<div class="header">
+    <h2 class="game-title">Tic-Tac-Toe</h2>
+</div>
+
+@if (Model.IsGameOver)
+{
+    <h3 class="winner-message">
+        Game Over!
+        @if (!string.IsNullOrEmpty(Model.Winner))
+        {
+            <span class="winner">Winner: @Model.Winner 🎉</span>
+        }
+        else
+        {
+            <span class="draw">It's a Draw! 🤝</span>
+        }
+    </h3>
+    <form method="post" asp-action="Reset">
+        <button type="submit" class="btn btn-success">🔄 Play Again</button>
+    </form>
+}
+else
+{
+    <h4>Current Player: <span class="current-player">@Model.CurrentPlayer</span></h4>
+}
+
+<div class="board">
+    @for (int i = 0; i < 9; i++)
+    {
+        <form method="post" asp-action="Play" class="cell-form">
+            <input type="hidden" name="cellIndex" value="@i" />
+            <button type="submit" class="cell @(Model.Board[i] != '-' ? "filled" : "")"
+            @(Model.IsGameOver || Model.Board[i] != '-' ? "disabled" : "")
+                    onclick="handlePlayerMove(event, @i)">
+                <span class="@(Model.Board[i] == 'X' ? "x-mark" : (Model.Board[i] == 'O' ? "o-mark" : ""))">
+                    @(Model.Board[i] == '-' ? "" : Model.Board[i].ToString())
+                </span>
+            </button>
+        </form>
+    }
+</div>
+
+<div class="back-container">
+    <form method="get" asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-danger back-btn">⬅ Back</button>
+    </form>
+</div>
+
+<!-- Hidden form to send a request for the computer's move -->
+<form id="computerMoveForm" method="post" asp-action="PlayComputer"></form>
+
+<!-- 🎥 Video Background -->
+<video autoplay muted loop id="backgroundVideo" class="background-video">
+    <source src="/videos/PP.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<button id="muteButton" class="mute-btn">🔊 Mute</button>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+        background: black;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    .header {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .game-title {
+        font-size: 42px;
+        font-weight: bold;
+        text-shadow: 0 0 20px #ffcc00;
+        color: #ffcc00;
+    }
+
+    .board {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(80px, 120px));
+        gap: 10px;
+        justify-content: center;
+        margin: 30px auto;
+        background: black;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .cell {
+        width: 100%;
+        height: 100px;
+        font-size: 50px;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid white;
+        background: black;
+        color: white;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        transition: all 0.3s;
+    }
+
+        .cell:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .cell.filled {
+            cursor: not-allowed;
+        }
+
+    .x-mark {
+        color: #ff4c4c;
+        text-shadow: 0 0 15px #ff4c4c;
+    }
+
+    .o-mark {
+        color: #00e5ff;
+        text-shadow: 0 0 15px #00e5ff;
+    }
+
+    .winner-message {
+        font-size: 28px;
+        font-weight: bold;
+        color: #4caf50;
+        text-shadow: 0 0 12px #4caf50;
+    }
+
+    .winner {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .draw {
+        color: #ff9800;
+        font-weight: bold;
+    }
+
+    .current-player {
+        font-weight: bold;
+        font-size: 24px;
+        color: #ffeb3b;
+        text-shadow: 0 0 6px #ffeb3b;
+    }
+
+    .mute-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: #ffcc00;
+        color: black;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+    }
+
+        .mute-btn:hover {
+            background: #ffaa00;
+        }
+
+    .back-container {
+        position: fixed;
+        bottom: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .back-btn {
+        padding: 10px 22px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        background: #d9534f;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+    }
+
+        .back-btn:hover {
+            background: #c9302c;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
+        }
+
+    @@media (max-width: 768px) {
+        .board
+
+    {
+        grid-template-columns: repeat(3, minmax(60px, 90px));
+    }
+
+    .cell {
+        height: 90px;
+        font-size: 40px;
+    }
+
+    .game-title {
+        font-size: 36px;
+    }
+
+    }
+</style>
+
+<script>
+    document.getElementById("muteButton").addEventListener("click", function () {
+        var video = document.getElementById("backgroundVideo");
+        video.muted = !video.muted;
+        this.textContent = video.muted ? "🔊 Unmute" : "🔇 Mute";
+    });
+</script>

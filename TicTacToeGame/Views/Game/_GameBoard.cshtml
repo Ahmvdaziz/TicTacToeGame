@@ -1,0 +1,14 @@
+﻿@model TicTacToeGame.Models.Game
+
+<table class="tic-tac-toe-board">
+    @for (int i = 0; i < 3; i++)
+    {
+        <tr>
+            @for (int j = 0; j < 3; j++)
+            {
+                int cellIndex = i * 3 + j;
+                <td class="cell" data-index="@cellIndex">@Model.Board[cellIndex]</td>
+            }
+        </tr>
+    }
+</table>

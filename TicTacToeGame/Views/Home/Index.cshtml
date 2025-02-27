@@ -1,0 +1,194 @@
+﻿<!-- 🎮 Home Page -->
+<div class="home-container">
+    <!-- 🎥 Video Background -->
+    <video class="video-background" autoplay loop muted>
+        <source src="/videos/X.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <button id="musicToggle" class="music-button">🔊</button>
+    <audio id="backgroundMusic" src="/sounds/background.m4a" loop></audio>
+
+    <div class="game-title-container">
+        <h2 class="game-subtitle line1">Hello Eyouth</h2>
+        <h2 class="game-subtitle line2">Tic Tac Toe</h2>
+    </div>
+
+    <!--  Profile Picture -->
+    <div class="profile-picture">
+        <img src="/images/zoz1.jpg" alt="Your Profile Picture">
+    </div>
+    <h1 class="game-title">Choose Your Game Mode</h1>
+
+    <div class="buttons-container">
+        <a href="@Url.Action("Index", "Game")" class="btn btn-primary mode-btn">👥 Play Against a Player</a>
+        <a href="@Url.Action("Index", "ComputerGame")" class="btn btn-danger mode-btn">🤖 Play Against Computer</a>
+    </div>
+</div>
+
+<style>
+    .game-title-container {
+        position: absolute;
+        top: 20%;
+        width: 100%;
+        text-align: center;
+    }
+
+    .game-subtitle {
+        font-size: 50px;
+        font-weight: bold;
+        color: #ffcc00;
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 40px #ffcc00;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInMove 4s infinite;
+    }
+
+    /* 🌀 توقيت ظهور كل سطر */
+    .line1 {
+        animation-delay: 0s;
+    }
+
+    .line2 {
+        animation-delay: 1s;
+    }
+
+    /* ✨ تأثير الظهور والتحرك */
+    @@keyframes fadeInMove {
+        0%
+
+    {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(0) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.8);
+    }
+
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        background: black;
+        color: white;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* زر الموسيقى */
+    .music-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #ffcc00;
+        border: none;
+        padding: 10px;
+        font-size: 24px;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #ffcc00;
+        transition: all 0.3s;
+    }
+
+        .music-button:hover {
+            background: #e6b800;
+            box-shadow: 0 0 20px #ffcc00;
+        }
+
+    /* Video Background Styling */
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    .home-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .profile-picture img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid white;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    .game-title {
+        font-size: 40px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #ffcc00;
+        text-shadow: 0 0 20px #ffcc00;
+    }
+
+    .buttons-container {
+        margin-top: 30px;
+    }
+
+    .mode-btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 24px;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: #008CBA;
+        box-shadow: 0 0 15px rgba(0, 140, 186, 0.8);
+    }
+
+        .btn-primary:hover {
+            background: #005f73;
+            box-shadow: 0 0 25px rgba(0, 140, 186, 1);
+        }
+
+    .btn-danger {
+        background: #d9534f;
+        box-shadow: 0 0 15px rgba(217, 83, 79, 0.8);
+    }
+
+        .btn-danger:hover {
+            background: #c9302c;
+            box-shadow: 0 0 25px rgba(217, 83, 79, 1);
+        }
+</style>
+
+<script>
+    document.getElementById("musicToggle").addEventListener("click", function () {
+        var music = document.getElementById("backgroundMusic");
+        var button = document.getElementById("musicToggle");
+
+        if (music.paused) {
+            music.play();
+            button.innerHTML = "🔊"; // أيقونة تشغيل الصوت عند التشغيل
+        } else {
+            music.pause();
+            button.innerHTML = "🔇"; // أيقونة كتم الصوت عند التوقف
+        }
+    });
+</script>

@@ -1,0 +1,253 @@
+﻿@{
+    ViewData["Title"] = "Game Winner";
+}
+
+@{
+    string winnerDisplay = ViewBag.Winner == "O" ? "Computer" : ViewBag.Winner;
+}
+
+<!-- 🎇 Celebration Background -->
+<div class="celebration-bg">
+    <h1 class="winner-title">🎉 Winner is: @winnerDisplay 🎉</h1>
+
+    <div class="buttons-container">
+        <a href="@Url.Action("Index", "ComputerGame")" class="btn btn-success play-again-btn">🔄 Play Again</a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary home-btn">🏠 Back to Home</a>
+    </div>
+</div>
+
+<!-- 🔊 Celebration Sounds -->
+<audio id="winSound" src="/sounds/win.mp3" preload="auto"></audio>
+<audio id="drawSound" src="/sounds/draw.mp3" preload="auto"></audio>
+<audio id="celebrationSound" src="/sounds/celebration.mp3" preload="auto"></audio>
+
+<!-- 🎊 Confetti Effect -->
+<div class="confetti-container"></div>
+<body>
+    <!-- 🎥 الفيديو كخلفية -->
+    <video autoplay muted loop id="backgroundVideo" class="background-video">
+        <source src="/videos/PP.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- 🔊 زر الميوت في الزاوية العلوية اليمنى -->
+    <button id="muteButton" class="mute-btn">🔊 Mute</button>
+
+    <div class="header">
+        <h2 class="game-title">Tic-Tac-Toe</h2>
+    </div>
+
+    <!-- باقي الكود كما هو... -->
+</body>
+
+<style>
+    /* خلفية الفيديو */
+    .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1; /* ضع الفيديو في الخلف */
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+        background: black;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* باقي التنسيقات كما هي... */
+</style>
+
+<script>
+    window.onload = function () {
+        let winner = "@winnerDisplay";
+        let celebrationSound = document.getElementById("celebrationSound");
+
+        try {
+            if (winner === "Draw") {
+                document.getElementById("drawSound").play();
+            } else {
+                document.getElementById("winSound").play();
+            }
+
+            // ✅ Play celebration sound after a small delay
+            setTimeout(() => {
+                celebrationSound.play();
+            }, 500);
+        } catch (error) {
+            console.warn("Error playing sound:", error);
+        }
+
+        // 🎊 Start confetti animation
+        startConfetti();
+    };
+
+    function startConfetti() {
+        const confettiContainer = document.querySelector(".confetti-container");
+
+        for (let i = 0; i < 50; i++) { // Reduced number for better performance
+            let confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confettiContainer.appendChild(confetti);
+        }
+
+        setTimeout(() => {
+            confettiContainer.innerHTML = ''; // Clean up confetti after 5 seconds
+        }, 5000);
+    }
+</script>
+
+
+<!-- ✨ Styling -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        background: black;
+        color: white;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .celebration-bg {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: url('/images/fireworks.gif') no-repeat center center/cover;
+    }
+
+    .winner-title {
+        font-size: 50px;
+        font-weight: bold;
+        color: #ffcc00;
+        text-shadow: 0 0 30px #ffcc00;
+        animation: glow 1.5s infinite alternate;
+    }
+
+    .buttons-container {
+        margin-top: 20px;
+    }
+
+    .play-again-btn, .home-btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px;
+        font-size: 24px;
+        font-weight: bold;
+        color: black;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+    .play-again-btn {
+        background: #4caf50;
+        box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+    }
+
+        .play-again-btn:hover {
+            background: #3e8e41;
+            box-shadow: 0 0 25px rgba(76, 175, 80, 1);
+        }
+
+    .home-btn {
+        background: #008CBA;
+        box-shadow: 0 0 15px rgba(0, 140, 186, 0.8);
+    }
+
+        .home-btn:hover {
+            background: #005f73;
+            box-shadow: 0 0 25px rgba(0, 140, 186, 1);
+        }
+
+    /* ✨ Glowing Effect */
+    @@keyframes glow {
+        from
+
+    {
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 30px #ffcc00;
+    }
+
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff;
+    }
+
+    }
+
+    /* 🎊 Falling Confetti */
+    .confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 15px;
+        background: red;
+        opacity: 0.8;
+        transform: rotate(45deg);
+        animation: fall linear infinite;
+    }
+
+   @@keyframes fall {
+        0%
+
+    {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+
+    }
+</style>
+<audio id="winnerMusic" src="/sounds/winner.m4a" preload="auto"></audio>
+<script>
+    window.onload = function () {
+        let winner = "@winnerDisplay";
+        let celebrationSound = document.getElementById("celebrationSound");
+        let winnerMusic = document.getElementById("winnerMusic"); // 🔊 موسيقى الفائز
+
+        try {
+            if (winner === "Draw") {
+                document.getElementById("drawSound").play();
+            } else {
+                document.getElementById("winSound").play();
+                setTimeout(() => {
+                    winnerMusic.play(); // ✅ تشغيل موسيقى الفائز بعد قليل
+                }, 1000); // تشغيل بعد ثانية
+            }
+
+            setTimeout(() => {
+                celebrationSound.play();
+            }, 500);
+        } catch (error) {
+            console.warn("Error playing sound:", error);
+        }
+
+        // 🎊 تشغيل تأثيرات الكونفيتي
+        startConfetti();
+    };
+</script>
+
