@@ -69,7 +69,7 @@ This is a **Tic-Tac-Toe (XO)** web application built with **ASP.NET Core MVC**. 
 
 ## Clone the repository:
 
-git clone https://github.com/your-repo/tic-tac-toe.git
+git clone https://github.com/TicTacToeGame/tic-tac-toe.git
 cd tic-tac-toe
 
 ## Setup the database:
