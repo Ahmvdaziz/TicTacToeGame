@@ -20,7 +20,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        z-index: -1; /* ضع الفيديو في الخلف */
+        z-index: -1; 
     }
 
     body {
@@ -32,7 +32,6 @@
         padding: 0;
     }
 
-    /* باقي التنسيقات كما هي... */
 </style>
 <div class="back-container">
     <form method="get" asp-controller="Home" asp-action="Index">
@@ -41,7 +40,6 @@
 </div>
 
 
-<!-- 🔊 زر الميوت في الزاوية العلوية اليمنى -->
 
 <div class="header">
     <h2 class="game-title">Tic-Tac-Toe</h2>
@@ -111,14 +109,14 @@ else
 <style>
     .back-container {
         position: fixed;
-        bottom: 120px; /* رفع الزر لفوق شوية */
+        bottom: 120px; 
         left: 50%;
         transform: translateX(-50%);
     }
 
     .back-btn {
-        padding: 10px 22px; /* تصغير الزر شوية */
-        font-size: 18px; /* تصغير الخط شوية */
+        padding: 10px 22px; 
+        font-size: 18px; 
         font-weight: bold;
         border: none;
         background: #d9534f;
